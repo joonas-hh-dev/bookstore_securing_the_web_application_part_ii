@@ -1,5 +1,7 @@
 package com.example.bookstore.web;
 
+import java.util.Optional;
+
 import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.domain.Book;
 
@@ -50,7 +52,33 @@ public class BookController {
     public String deleteBook(@PathVariable Long id) {
         bookRepository.deleteById(id);
         return "redirect:/booklist";
-}
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editBook(@PathVariable Long id, Model model) {
+        Optional<Book> result = bookRepository.findById(id);
+        Book book = result.get();
+        model.addAttribute("book", book);
+        return "editbook";
+    }
     
-    
+    @PostMapping("/savebook/{id}")
+    public String saveBook(
+        @PathVariable Long id,
+        @RequestParam String title,
+        @RequestParam String author,
+        @RequestParam int publicationYear,
+        @RequestParam String isbn,
+        @RequestParam float price
+    ) {
+        Optional<Book> result = bookRepository.findById(id);
+        Book book = result.get();
+        book.setTitle(title);
+        book.setAuthor(author);
+        book.setPublicationYear(publicationYear);
+        book.setIsbn(isbn);
+        book.setPrice(price);
+        bookRepository.save(book);
+        return "redirect:/booklist";
+    }
 }
