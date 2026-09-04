@@ -45,4 +45,8 @@ public class Book {
     public float getPrice() {
         return price;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
