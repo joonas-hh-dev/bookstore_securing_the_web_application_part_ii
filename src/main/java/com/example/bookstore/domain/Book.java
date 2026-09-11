@@ -3,6 +3,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Book {
@@ -12,15 +13,18 @@ public class Book {
     private String title;
     private String author;
     private String isbn;
+    @ManyToOne
+    private Category category;
     private int publicationYear;
     private float price;
 
-    public Book(String title, String author, int publicationYear, String isbn, float price) {
+    public Book(String title, String author, int publicationYear, String isbn, float price, Category category) {
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
         this.isbn = isbn;
         this.price = price;
+        this.category = category;
     }
 
     public Book() {
@@ -50,6 +54,10 @@ public class Book {
         return id;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
@@ -68,5 +76,9 @@ public class Book {
 
     public void setPrice(float price) {
         this.price = price;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

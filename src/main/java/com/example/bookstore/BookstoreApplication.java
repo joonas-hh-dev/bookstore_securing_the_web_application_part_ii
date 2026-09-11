@@ -1,12 +1,16 @@
 package com.example.bookstore;
 
+import java.util.ArrayList;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import com.example.bookstore.domain.Book;
+import com.example.bookstore.domain.Category;
 import com.example.bookstore.repository.BookRepository;
+import com.example.bookstore.repository.CategoryRepository;
 
 @SpringBootApplication
 public class BookstoreApplication {
@@ -16,9 +20,17 @@ public class BookstoreApplication {
 	}
 
 	@Bean
-	public CommandLineRunner bookstoreRunner(BookRepository bookRepository) {
+	public CommandLineRunner bookstoreRunner(BookRepository bookRepository, CategoryRepository categoryRepository) {
 		return args -> {
-			Book book = new Book("Esimerkki", "Mikko Mallikas", 2026, "123456", 20.0f);
+			Category fiction = new Category("Kaunokirjallisuus", new ArrayList<>());
+			Category nonFiction = new Category("Tietokirjallisuus", new ArrayList<>());
+			Category biographies = new Category("Elämänkerrat", new ArrayList<>());
+
+			categoryRepository.save(fiction);
+			categoryRepository.save(nonFiction);
+			categoryRepository.save(biographies);
+
+			Book book = new Book("Esimerkki", "Mikko Mallikas", 2026, "123456", 20.0f, fiction);
 			bookRepository.save(book);
 		};
 	}

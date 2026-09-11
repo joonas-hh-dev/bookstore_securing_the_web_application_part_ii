@@ -1,9 +1,11 @@
 package com.example.bookstore.web;
 
+import com.example.bookstore.repository.CategoryRepository;
 import java.util.Optional;
 
 import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.domain.Book;
+import com.example.bookstore.domain.Category;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class BookController {
 
+    private final CategoryRepository categoryRepository;
     private final BookRepository bookRepository;
 
-    public BookController(BookRepository bookRepository) {
+    public BookController(BookRepository bookRepository, CategoryRepository categoryRepository) {
         this.bookRepository = bookRepository;
+        this.categoryRepository = categoryRepository;
     }
     
     @GetMapping("/booklist")
@@ -31,7 +35,8 @@ public class BookController {
     }
 
     @GetMapping("/addbook")
-    public String showAddBookForm() {
+    public String showAddBookForm(Model model) {
+        model.addAttribute("categories", categoryRepository.findAll());
         return "addbook";
     }
 
@@ -41,9 +46,12 @@ public class BookController {
         @RequestParam String author,
         @RequestParam int publicationYear,
         @RequestParam String isbn,
-        @RequestParam float price
+        @RequestParam float price,
+        @RequestParam Long category
     ) {
-        Book book = new Book(title, author, publicationYear, isbn, price);
+        Optional<Category> result = categoryRepository.findById(category);
+        Category selectedCategory = result.get();
+        Book book = new Book(title, author, publicationYear, isbn, price, selectedCategory);
         bookRepository.save(book);
         return "redirect:/booklist";
     }
@@ -79,6 +87,6 @@ public class BookController {
         book.setIsbn(isbn);
         book.setPrice(price);
         bookRepository.save(book);
-        return "redirect:/booklist";
+    return "redirect:/booklist";
     }
 }
