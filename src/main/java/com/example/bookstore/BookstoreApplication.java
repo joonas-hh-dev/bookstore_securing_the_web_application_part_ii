@@ -31,7 +31,9 @@ public class BookstoreApplication {
 			categoryRepository.save(biographies);
 
 			Book book = new Book("Esimerkki", "Mikko Mallikas", 2026, "123456", 20.0f, fiction);
+			Book book2 = new Book("Toinen esimerkki", "Matti Mallikas", 2025, "654321", 10.0f, nonFiction);
 			bookRepository.save(book);
+			bookRepository.save(book2);
 		};
 	}
 
