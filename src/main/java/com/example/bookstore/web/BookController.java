@@ -7,11 +7,13 @@ import com.example.bookstore.repository.BookRepository;
 import com.example.bookstore.domain.Book;
 import com.example.bookstore.domain.Category;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -56,6 +58,7 @@ public class BookController {
         return "redirect:/booklist";
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
         bookRepository.deleteById(id);
@@ -89,4 +92,9 @@ public class BookController {
         bookRepository.save(book);
     return "redirect:/booklist";
     }
+    
+    @RequestMapping(value="/login")
+    public String login() {
+		return "login";
+	}
 }

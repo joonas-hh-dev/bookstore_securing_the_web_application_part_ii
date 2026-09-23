@@ -7,6 +7,10 @@
 <body>
 
     <h1>Books</h1>
+    <p>Hello <span sec:authentication="name"></span></p>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Logout</button>
+    </form>
     <table class="table table-striped">
     <tr>
         <th>Author</th>
