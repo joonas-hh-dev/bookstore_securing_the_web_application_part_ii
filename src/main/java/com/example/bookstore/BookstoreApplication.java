@@ -26,26 +26,30 @@ public class BookstoreApplication {
 	@Bean
 	public CommandLineRunner bookstoreRunner(BookRepository bookRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
 		return args -> {
-			Category fiction = new Category("Kaunokirjallisuus", new ArrayList<>());
-			Category nonFiction = new Category("Tietokirjallisuus", new ArrayList<>());
-			Category biographies = new Category("Elämänkerrat", new ArrayList<>());
+			// Category fiction = new Category("Kaunokirjallisuus", new ArrayList<>());
+			// Category nonFiction = new Category("Tietokirjallisuus", new ArrayList<>());
+			// Category biographies = new Category("Elämänkerrat", new ArrayList<>());
 
-			categoryRepository.save(fiction);
-			categoryRepository.save(nonFiction);
-			categoryRepository.save(biographies);
+			// categoryRepository.save(fiction);
+			// categoryRepository.save(nonFiction);
+			// categoryRepository.save(biographies);
 
-			Book book = new Book("Esimerkki", "Mikko Mallikas", 2026, "123456", 20.0f, fiction);
-			Book book2 = new Book("Toinen esimerkki", "Matti Mallikas", 2025, "654321", 10.0f, nonFiction);
-			bookRepository.save(book);
-			bookRepository.save(book2);
+			// Book book = new Book("Esimerkki", "Mikko Mallikas", 2026, "123456", 20.0f, fiction);
+			// Book book2 = new Book("Toinen esimerkki", "Matti Mallikas", 2025, "654321", 10.0f, nonFiction);
+			// bookRepository.save(book);
+			// bookRepository.save(book2);
 
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 			User user = new User("mattimeikalainen", passwordEncoder.encode("SalainenSalailija123"), "matti.meikalainen@esimerkki.com", "ADMIN");
 			User user2 = new User("maijameikalainen", passwordEncoder.encode("SalaPoliisi345"), "maija.meikalainen@esimerkki.com", "USER");
 
-			userRepository.save(user);
-			userRepository.save(user2);
+			if (!userRepository.existsByUsername("mattimeikalainen")) {
+				userRepository.save(user);
+			}
+			if (!userRepository.existsByUsername("maijameikalainen")) {
+				userRepository.save(user2);
+			}
 		};
 	}
 
